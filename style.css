@@ -166,6 +166,14 @@ body {
     right: 5px;
 }
 
+.player1 .life {
+    text-align: right;
+}
+
+.player2 .life {
+    text-align: left;
+}
+
 .chat {
     width: 786px;
     height: 30vh;
