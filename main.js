@@ -1,5 +1,13 @@
 const $arena = document.querySelector('.arenas');
-const $randButton = document.querySelector('.button');
+const $formConrol = document.querySelector('.control');
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+};
+
+const ATTACK = ['head', 'body', 'foot'];
 
 const player1 = {
   name: 'KITANA',
@@ -7,9 +15,9 @@ const player1 = {
   hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
   weapon: ['Glaive'],
-  changeHP: changeHP,
-  elHP: elHP,
-  renderHP: renderHP,
+  changeHP,
+  elHP,
+  renderHP,
 };
 
 const player2 = {
@@ -18,9 +26,9 @@ const player2 = {
   hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
   weapon: ['Longsword'],
-  changeHP: changeHP,
-  elHP: elHP,
-  renderHP: renderHP,
+  changeHP,
+  elHP,
+  renderHP,
 };
 
 const createElem = (tag, className) => {
@@ -57,13 +65,37 @@ const createPlayer = (object) => {
   return $player;
 };
 
-$randButton.addEventListener('click', () => {
-  player1.changeHP(getRandom(20));
-  player1.renderHP();
-  player2.changeHP(getRandom(20));
-  player2.renderHP();
+function enemyAttack() {
+  const hit = ATTACK[getRandom(3) - 1];
+  const defence = ATTACK[getRandom(3) - 1];
+
+  return {
+    dmg: getRandom(HIT[hit]),
+    hit,
+    defence,
+  };
+}
+
+$formConrol.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const enemy = enemyAttack();
+  const attack = {};
+
+  for (let item of $formConrol) {
+    if (item.checked && item.name === 'hit') {
+      attack.dmg = getRandom(HIT[item.value]);
+      attack.hit = item.value;
+    }
+    if (item.checked && item.name === 'defence') {
+      attack.defence = item.value;
+    }
+    item.checked = false;
+  }
+  isHit(player1, enemy, attack);
+  isHit(player2, attack, enemy);
+
   if (player1.hp === 0 || player2.hp === 0) {
-    $randButton.style = 'display: none';
+    $formConrol.style = 'display: none';
     const title = 
     player1.hp === 0
     ? player2.hp === 0
@@ -74,6 +106,13 @@ $randButton.addEventListener('click', () => {
     $arena.appendChild(createReloadButton());
   }
 });
+
+function isHit(playerDef, attacker, defender) {
+  if (attacker.hit !== defender.defence) {
+    playerDef.changeHP(attacker.dmg);
+    playerDef.renderHP();
+  }
+}
 
 function elHP() {
   return document.querySelector(`.player${this.player} .life`);
@@ -103,7 +142,7 @@ const playerWin = (name) => {
   }
 
   return $winTitle;
-}
+};
 
 function createReloadButton() {
   const $reloadWrap = createElem('div', 'reloadWrap');
@@ -116,4 +155,3 @@ function createReloadButton() {
 
 $arena.appendChild(createPlayer(player1));
 $arena.appendChild(createPlayer(player2));
-
