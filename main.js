@@ -7,18 +7,9 @@ const player1 = {
   hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
   weapon: ['Glaive'],
-  changeHP: function (num) {
-    this.hp -= num;
-    if (this.hp <= 0) {
-      this.hp = 0;
-    }
-  },
-  elHP: function () {
-    return document.querySelector(`.player${this.player} .life`);
-  },
-  renderHP: function ($elem) {
-    $elem.style.width = `${this.hp}%`;
-  }
+  changeHP: changeHP,
+  elHP: elHP,
+  renderHP: renderHP,
 };
 
 const player2 = {
@@ -27,18 +18,9 @@ const player2 = {
   hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
   weapon: ['Longsword'],
-  changeHP: function (num) {
-    this.hp -= num;
-    if (this.hp <= 0) {
-      this.hp = 0;
-    }
-  },
-  elHP: function () {
-    return document.querySelector(`.player${this.player} .life`);
-  },
-  renderHP: function ($elem) {
-    $elem.style.width = `${this.hp}%`;
-  }
+  changeHP: changeHP,
+  elHP: elHP,
+  renderHP: renderHP,
 };
 
 const createElem = (tag, className) => {
@@ -77,9 +59,9 @@ const createPlayer = (object) => {
 
 $randButton.addEventListener('click', () => {
   player1.changeHP(getRandom(20));
-  player1.renderHP(player1.elHP());
+  player1.renderHP();
   player2.changeHP(getRandom(20));
-  player2.renderHP(player2.elHP());
+  player2.renderHP();
   if (player1.hp === 0 || player2.hp === 0) {
     $randButton.style = 'display: none';
     const title = 
@@ -92,6 +74,21 @@ $randButton.addEventListener('click', () => {
     $arena.appendChild(createReloadButton());
   }
 });
+
+function elHP() {
+  return document.querySelector(`.player${this.player} .life`);
+}
+
+function changeHP(num) {
+  this.hp -= num;
+  if (this.hp <= 0) {
+    this.hp = 0;
+  }
+}
+
+function renderHP() {
+  this.elHP().style.width = `${this.hp}%`;
+}
 
 function getRandom(num) {
   return Math.ceil(Math.random() * num);
