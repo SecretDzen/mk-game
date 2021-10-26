@@ -1,5 +1,5 @@
 import {elHP, changeHP, renderHP} from './plMethods.js';
-import {createElem} from './gameLogic.js';
+import { createElem } from './gameLogic.js';
 import { enemyAttack, playerAttack, takeHit, $formConrol, $arena, showResult } from './playerLogic.js';
 import { generateLogs } from './logs.js';
 
