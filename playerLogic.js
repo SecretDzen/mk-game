@@ -45,6 +45,7 @@ export function takeHit(playerDef, playerAtk, attacker, defender) {
     generateLogs('defence', playerDef, playerAtk, attacker);
   }
 }
+
 export function showResult(player1, player2) {
   if (player1.hp === 0 || player2.hp === 0) {
     let title;

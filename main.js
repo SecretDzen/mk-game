@@ -3,37 +3,44 @@ import { createElem } from './gameLogic.js';
 import { enemyAttack, playerAttack, takeHit, $formConrol, $arena, showResult } from './playerLogic.js';
 import { generateLogs } from './logs.js';
 
-const player1 = {
+class Player {
+  constructor(props) {
+    this.name = props.name.toUpperCase();
+    this.img = `http://reactmarathon-api.herokuapp.com/assets/${props.name.toLowerCase()}.gif`;
+    this.hp = 10;
+    this.player = props.player;
+    this.weapon = props.weapon;
+  }
+
+  elHP = elHP;
+  changeHP = changeHP;
+  renderHP = renderHP;
+}
+
+const player1 = new Player({
   name: 'KITANA',
   player: 1,
-  hp: 100,
-  img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
   weapon: ['Glaive'],
-  changeHP,
-  elHP,
-  renderHP,
-};
+});
 
-const player2 = {
+const player2 = new Player({
   name: 'SCORPION',
   player: 2,
-  hp: 100,
-  img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
   weapon: ['Longsword'],
   changeHP,
   elHP,
   renderHP,
-};
+});
 
-const createPlayer = (object) => {
-  const $player = createElem('div', `player${object.player}`);
+const createPlayer = ({player, hp, name, img}) => {
+  const $player = createElem('div', `player${player}`);
   const $prorgessBar = createElem('div', 'progressbar');
 
   const $life = createElem('div', 'life');
   const $name = createElem('div', 'name');
 
-  $life.style.width = `${object.hp}%`;
-  $name.innerText = object.name;
+  $life.style.width = `${hp}%`;
+  $name.innerText = name;
 
   $prorgessBar.appendChild($life);
   $prorgessBar.appendChild($name);
@@ -43,7 +50,7 @@ const createPlayer = (object) => {
   const $character = createElem('div', 'character');
 
   const $img = createElem('img');
-  $img.src = `${object.img}`;
+  $img.src = img;
 
   $character.appendChild($img);
   $player.appendChild($character);
