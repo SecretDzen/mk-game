@@ -7,7 +7,7 @@ class Player {
   constructor(props) {
     this.name = props.name.toUpperCase();
     this.img = `http://reactmarathon-api.herokuapp.com/assets/${props.name.toLowerCase()}.gif`;
-    this.hp = 10;
+    this.hp = 100;
     this.player = props.player;
     this.weapon = props.weapon;
   }
