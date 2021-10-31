@@ -54,7 +54,7 @@ export function generateLogs(type, plDef, plAtk, attacker) {
       const hitText = text
         .replace('[playerKick]', plAtk.name)
         .replace('[playerDefence]', plDef.name);
-      const damage = attacker.dmg;
+      const damage = attacker.value;
       el = `<p>${time} - ${hitText} Урон: ${damage}. Осталось: ${hp}</p>`;
       break;
     case 'defence':
