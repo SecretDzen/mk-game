@@ -1,31 +1,28 @@
-import { getRandom, createElem, createReloadButton } from './gameLogic.js';
+import { createElem, createReloadButton } from './gameLogic.js';
 import { generateLogs } from './logs.js';
 
 export const $arena = document.querySelector('.arenas');
 export const $formConrol = document.querySelector('.control');
 
-const HIT = {
-  head: 30,
-  body: 25,
-  foot: 20,
-};
+async function post({ hit, defence }) {
+  const thisPost = await fetch(
+    'http://reactmarathon-api.herokuapp.com/api/mk/player/fight',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        hit,
+        defence,
+      }),
+    }
+  ).then((res) => res.json());
+  return thisPost;
+}
 
-const ATTACK = ['head', 'body', 'foot'];
-
-export const enemyAttack = () => {
-  const enemy = {};
-  enemy.hit = ATTACK[getRandom(3) - 1];
-  enemy.defence = ATTACK[getRandom(3) - 1];
-  enemy.dmg = getRandom(HIT[enemy.hit]);
-  return enemy;
-};
-
-export const playerAttack = () => {
+export function getAttack() {
   const attack = {};
 
   for (let item of $formConrol) {
     if (item.checked && item.name === 'hit') {
-      attack.dmg = getRandom(HIT[item.value]);
       attack.hit = item.value;
     }
     if (item.checked && item.name === 'defence') {
@@ -33,12 +30,12 @@ export const playerAttack = () => {
     }
     item.checked = false;
   }
-  return attack;
-};
+  return post(attack);
+}
 
 export function takeHit(playerDef, playerAtk, attacker, defender) {
   if (attacker.hit !== defender.defence) {
-    playerDef.changeHP(attacker.dmg);
+    playerDef.changeHP(attacker.value);
     playerDef.renderHP();
     generateLogs('hit', playerDef, playerAtk, attacker);
   } else {

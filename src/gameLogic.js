@@ -1,10 +1,18 @@
 export const createElem = (tag, className) => {
   const $tag = document.createElement(tag);
   if (className) {
-    $tag.classList.add(className);
+      if (Array.isArray(className)) {
+          className.forEach(item => {
+              $tag.classList.add(item);
+          })
+      } else {
+          $tag.classList.add(className);
+      }
+
   }
+
   return $tag;
-};
+}
 
 export function dateGenerator() {
   const date = new Date();
@@ -20,7 +28,7 @@ export function createReloadButton() {
   const $reloadWrap = createElem('div', 'reloadWrap');
   const $reloadButton = createElem('button', 'button');
   $reloadButton.innerText = 'Reload';
-  $reloadButton.addEventListener('click', () => window.location.reload());
+  $reloadButton.addEventListener('click', () => window.location.pathname = '');
   $reloadWrap.appendChild($reloadButton);
   return $reloadWrap;
 }
